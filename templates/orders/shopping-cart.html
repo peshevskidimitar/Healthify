@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart{% endblock %}
+{% block content %}
+    <div class="container">
+        {% if items %}
+            <div class="container rounded-5" style="background-color: rgba(234, 243, 250, 255);">
+                <div class="row p-3">
+                    <div class="col">
+                        <table class="text-center w-100 table-responsive">
+                            <thead>
+                            <tr>
+                                <th class="px-3"></th>
+                                <th class="px-3"><span class="rounded-5 px-3 py-2 my-1">Product</span></th>
+                                <th class="px-3"><span class="rounded-5 px-3 py-2 my-1">Price</span></th>
+                                <th class="px-3"><span class="rounded-5 px-3 py-2 my-1">Quantity</span></th>
+                                <th class="px-3"><span class="rounded-5 px-3 py-2 my-1">Subtotal</span></th>
+                                <th class="px-3"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td class="px-3">
+                                        <img src="{{ MEDIA_URL }}{{ item.grocery.image.url }}"
+                                             class="img-fluid"
+                                             style="max-width: 75px;"
+                                        />
+                                    </td>
+                                    <td class="px-3"><span
+                                            class="rounded-5 px-3 py-2 my-1">{{ item.grocery.name }}</span>
+                                    </td>
+                                    <td class="px-3"><span class="rounded-5 px-3 py-2 my-1">$2.49</span></td>
+                                    <td class="px-3">
+                            <span class="rounded-5 px-3 py-2 my-1 d-flex">
+                                <span style="display: block;"
+                                      class="text-center ms-auto ps-3">{{ item.quantity }}</span>
+                                <span style="display: block;" class="ms-auto">
+                                    <a href="{% url 'orders:increase-order-item-quantity' item.id %}"
+                                       class="text-white"><i
+                                            class="bi bi-arrow-up"></i></a>
+                                    <a href="{% url 'orders:decrease-order-item-quantity' item.id %}"
+                                       class="text-white"><i
+                                            class="bi bi-arrow-down"></i></a>
+                                </span>
+                            </span>
+                                    </td>
+                                    <td class="px-3"><span class="rounded-5 px-3 py-2 my-1">${{ item.subtotal }}</span>
+                                    </td>
+                                    <td class="px-3">
+                                        <form method="POST" action="{% url 'orders:remove_from_cart' item.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger rounded-5 px-3 py-2 my-1">Remove
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td class="py-3"></td>
+                                <td class="py-3"></td>
+                                <td class="py-3"></td>
+                                <td class="py-3"></td>
+                                <td class="py-3"></td>
+                                <td class="py-3"></td>
+                            </tr>
+                            <tr>
+                                <td class="px-3"></td>
+                                <td class="px-3"></td>
+                                <td class="px-3"></td>
+                                <th class="px-3"><span class="rounded-5 px-5 py-2 my-1">Total</span></th>
+                                <td class="px-3"><span class="rounded-5 px-5 py-2 my-1">${{ total_price }}</span></td>
+                                <td class="px-3"></td>
+                            </tr>
+                            <tr>
+                                <td class="px-3"></td>
+                                <td class="px-3"></td>
+                                <td class="px-3"></td>
+                                <td colspan="2" class="px-3">
+                                    <a href="{% url 'orders:checkout' %}"
+                                       class="btn btn-success rounded-5 px-5 py-2 my-1 w-100 text-primary">
+                                        <strong style="font-size: 18px;">
+                                            Proceed To Checkout
+                                        </strong>
+                                    </a>
+                                </td>
+                                <td class="px-3"></td>
+                                <td class="px-3"></td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-8">
+                        <img class="img-fluid"
+                             src="{% static 'images/man-supplying-ingredients-woman-making-drink.jpg' %}"/>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="container rounded-5" style="background-color: rgba(234, 243, 250, 255);">
+                <div class="row mb-3 px-5 py-3">
+                    <div class="col d-flex justify-content-center">
+                        <div class="bg-primary text-white rounded-5 px-5 py-3 w-75 text-center"
+                             style="font-size: 32px; font-style: italic; font-weight: bold;">
+                            Looks like your shopping cart is empty.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container d-flex flex-column justify-content-between">
+                <div class="row my-3">
+                    <div class="col-12 text-center">
+                        <a href="{% url 'groceries:groceries' %}" class="btn btn-secondary text-primary rounded-5 px-5">
+                            Back To Shopping
+                        </a>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-8">
+                        <img class="img-fluid"
+                             src="{% static 'images/man-supplying-ingredients-woman-making-drink.jpg' %}"/>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

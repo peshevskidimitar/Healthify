@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Groceries{% endblock %}
+{% block content %}
+    <div class="container flex-grow-1">
+        <div class="row h-100">
+            <div class="col-4 d-flex flex-column justify-content-between">
+                {% if user.role == 'SELLER' %}
+                    <div class="container">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <a href="{% url 'groceries:add_grocery' %}" class="btn text-white rounded-5 px-5 w-100"
+                                   style="background-color: rgba(43, 70, 139, 255);">
+                                    <strong>Add New Grocery</strong>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="d-flex flex-column justify-content-between flex-grow-1">
+                    <div class="container bg-info px-5 py-3 rounded-5">
+                        <div id="category-accordion" class="row">
+                            <h5 class="bg-primary text-white px-3 py-1 mb-3 rounded-5"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#category-accordion-body" aria-expanded="true"
+                                aria-controls="category-accordion-body">
+                                Category
+                            </h5>
+                            <div id="category-accordion-body" class="collapse show"
+                                 data-bs-parent="#category-accordion">
+                                <div class="row">
+                                    <div class="col-2"></div>
+                                    <div class="col-10">
+                                        <ul style="list-style: none;" class="w-100">
+                                            {% for category in categories %}
+                                                <li class="category text-white my-1 px-3 py-1 rounded-5">
+                                                    <a href="{% url 'groceries:groceries' %}?category={{ category }}">{{ category }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="diet-accordion" class="row">
+                            <h5 class="bg-primary text-white px-3 py-1 mb-3 rounded-5"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#diet-accordion-body" aria-expanded="true"
+                                aria-controls="diet-accordion-body">Diet</h5>
+                            <div id="diet-accordion-body" class="collapse show" data-bs-parent="#diet-accordion">
+                                <div class="row">
+                                    <div class="col-2"></div>
+                                    <div class="col-10">
+                                        <ul style="list-style: none;">
+                                            {% for diet in diets %}
+                                                <li class="category text-white my-1 px-3 py-1 rounded-5">
+                                                    <a href="{% url 'groceries:groceries' %}?diet={{ diet }}">{{ diet }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <img class="img-fluid"
+                                     src="{% static 'images/mother-father-with-kids-cooking-dishes-kitchen.jpg' %}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8 ">
+                <div class="container px-5 h-100 d-flex flex-column justify-content-between">
+                    <div class="row row-cols-3 g-3 mb-3">
+                        {% for grocery in page.object_list %}
+                            <div class="col">
+                                <div class="card border-0 rounded-5 px-3 py-3 h-100"
+                                     style="background-color: rgba(234, 243, 250, 255);">
+                                    <div class="card-body px-1 py-1">
+                                        <h5 class="card-subtitle text-primary mb-0"
+                                            style="font-size: 18px;">{{ grocery.name }}</h5>
+                                    </div>
+                                    <div class="text-center">
+                                        <img src="{{ MEDIA_URL }}{{ grocery.image.url }}"
+                                             class="card-img-bottom rounded-0"
+                                             alt="...">
+                                    </div>
+                                    <div class="card-body px-1 py-1 d-flex justify-content-between align-items-center">
+                                        <div class="card-subtitle text-primary price" style="font-size: 20px;">
+                                            ${{ grocery.price }}</div>
+                                        <a href="{% url 'groceries:grocery_details' grocery.id %}" class="details">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col d-flex justify-content-end">
+                            <nav aria-label="...">
+                                <ul class="d-flex" style="list-style: none;">
+                                    {% for num_page in page.paginator.page_range %}
+                                        {% if page.number == num_page %}
+                                            <li class="page-item mx-1 active" aria-current="page">
+                                                <a class="bg-primary px-3 py-2 rounded-circle text-white page-link"
+                                                   href="{% url 'groceries:groceries' %}?page={{ num_page }}">{{ num_page }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item mx-1">
+                                                <a class="px-3 py-2 rounded-circle text-primary page-link"
+                                                   href="{% url 'groceries:groceries' %}?page={{ num_page }}"
+                                                   style="background-color: rgba(83, 124, 229, 255);">
+                                                    {{ num_page }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

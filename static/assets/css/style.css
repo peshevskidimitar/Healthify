@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+html, body {
+    font-family: Montserrat, sans-serif !important;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#main-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+main {
+    flex: 1;
+    display: flex;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.header, .footer {
+    background-color: rgba(164, 205, 158, 255) !important;
+}
+
+.nav-link {
+    font-style: italic;
+}
+
+.message {
+    font-size: 20px;
+    font-style: italic;
+}
+
+.icons {
+    font-size: 20px;
+}
+
+.citation {
+    font-size: 26px;
+    font-style: italic;
+    opacity: 70%;
+}
+
+th > span {
+    display: inline-block;
+    background-color: rgba(21, 33, 59, 255);
+    color: white;
+    width: 100%;
+}
+
+td > span {
+    display: inline-block;
+    background-color: rgba(83, 124, 229, 255);
+    color: white;
+    width: 100%;
+}
+
+.category {
+    background-color: rgba(83, 124, 229, 255) !important;
+}
+
+input::file-selector-button {
+    display: none;
+}
+
+#image-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    overflow: hidden;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    border: var(--bs-border-width) solid transparent;
+    transform-origin: 0 0;
+    transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+label > strong {
+    font-size: 20px;
+}
+
+.nutrition-facts-label label {
+    white-space: nowrap;
+}
+
+.nutrition-facts-label > .main-label > div {
+    font-size: 20px;
+}
+
+.form-control,
+.form-control:active,
+.form-control:focus,
+.form-control:focus:active,
+.form-select,
+.form-select:active,
+.form-select:focus,
+.form-select:focus:active {
+    background-color: rgba(234, 243, 250, 255) !important;
+    border-color: rgba(234, 243, 250, 255) !important;
+}
+
+.checkout-form .form-control,
+.checkout-form.form-control:active,
+.checkout-form.form-control:focus,
+.checkout-form.form-control:focus:active,
+.checkout-form.form-select,
+.checkout-form.form-select:active,
+.checkout-form.form-select:focus,
+.checkout-form.form-select:focus:active {
+    background-color: white !important;
+    border-color: rgba(234, 243, 250, 255) !important;
+}
+
+.form-floating label:after {
+    background-color: rgba(234, 243, 250, 255) !important;
+    padding-top: 20px !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(234, 243, 250, 255) !important;
+}
+
+a.nav-link {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.price {
+    color: rgba(83, 124, 229, 255) !important;
+}
+
+a.details {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+select::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+select {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+li.category > a {
+    text-decoration: none;
+    color: white;
+}
+
+#category-accordion h5,
+#diet-accordion h5 {
+    cursor: pointer;
+}
+
+.order-items-count {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bold;
+    background-color: #a52834;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -5px;
+    left: 30px;
+}

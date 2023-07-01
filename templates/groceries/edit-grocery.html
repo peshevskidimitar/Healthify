@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Add new grocery{% endblock %}
+{% block content %}
+    <div class="container">
+        <form method="POST" action="{% url 'groceries:edit_grocery' grocery.id %}" id="add-grocery"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 px-5">
+                        <div class="form-floating mb-3">
+                            <input class="form-control rounded-5 px-5" type="text" name="name" maxlength="255"
+                                   required=""
+                                   id="id_name"
+                                   placeholder="Name"
+                                   value="{{ grocery.name }}">
+                            <label for="id_name" class="px-5">Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                    <textarea class="form-control rounded-5 px-5" name="description" cols="40" rows="10" required=""
+                              id="id_description"
+                              placeholder="Description" style="height: 100px;">{{ grocery.description }}</textarea>
+                            <label for="id_description" class="px-5">Description</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select h-25 rounded-5 px-5" name="categories" required=""
+                                    id="id_categories" multiple>
+                                {% for category in categories %}
+                                    {% if category in grocery.categories.all %}
+                                        <option value="{{ category.id }}" selected>{{ category.name }}</option>
+                                    {% else %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label for="id_categories" class="px-5">Categories</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select h-25 rounded-5 px-5" name="diets" required="" id="id_diets"
+                                    multiple>
+                                {% for diet in diets %}
+                                    {% if diet in grocery.diets.all %}
+                                        <option value="{{ diet.id }}" selected>{{ diet.name }}</option>
+                                    {% else %}
+                                        <option value="{{ diet.id }}">{{ diet.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label for="id_diets" class="px-5">Diets</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control rounded-5 px-5" type="number" name="price" step="0.01"
+                                   required=""
+                                   id="id_price" placeholder="Price" value="{{ grocery.price }}">
+                            <label for="id_price" class="px-5">Price</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control rounded-5 px-5" type="number" name="quantity" required=""
+                                   id="id_quantity" placeholder="Quantity" value="{{ grocery.quantity }}">
+                            <label for="id_quantity" class="px-5">Quantity</label>
+                        </div>
+                        <div class="mb-3" style="position: relative;">
+                            <label for="id_image"
+                                   class="form-control rounded-5 px-5 py-3 d-flex justify-content-between"
+                                   style="cursor: pointer;">
+                        <span id="image-label" class="px-5"
+                              style="color: rgba(var(--bs-body-color-rgb), 0.65); transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem); position: absolute;">Image</span>
+                                <input class="pt-3" type="file" name="image" accept="image/*" required="" id="id_image"
+                                       style="cursor: pointer;">
+                                <span class="pt-3 pb-0"><i class="bi bi-upload"></i></span>
+                            </label>
+                        </div>
+                        <div>
+                            {% if grocery_form_errors %}
+                                {{ grocery_form_errors }}
+                            {% endif %}
+                            {% if nutrition_facts_label_form_errors %}
+                                {{ nutrition_facts_label_form_errors }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-6 px-5">
+                        <div class="rounded-5 py-3 px-5 nutrition-facts-label text-white"
+                             style="background-color: rgba(83, 124, 229, 255); height: fit-content;">
+                            <h3 class="pt-3">Nutrition facts (per 100 grams)</h3>
+                            <hr class="border-5 border-white w-100 opacity-100 rounded-5 pb-0"/>
+                            <div class="mb-2 d-flex align-items-center main-label">
+                                <label class="form-label mb-0 me-3" for="id_fats"><strong>Fats</strong></label>
+                                <input class="form-control form-control-sm rounded-5 text-center" type="number"
+                                       name="fats"
+                                       step="0.01" required="" id="id_fats"
+                                       value="{{ grocery.nutrition_facts_label.fats }}">
+                                <div class="ms-3">grams</div>
+                            </div>
+                            <div class="mb-2 d-flex align-items-center">
+                                <label class="form-label mb-0 me-3" for="id_saturated_fats">Saturated fats</label>
+                                <input class="form-control form-control-sm rounded-5 text-center" type="number"
+                                       name="saturated_fats" step="0.01" required="" id="id_saturated_fats"
+                                       value="{{ grocery.nutrition_facts_label.saturated_fats }}">
+                                <div class="ms-3">grams</div>
+                            </div>
+                            <div class="mb-2 d-flex align-items-center">
+                                <label class="form- mb-0 me-3" for="id_polyunsaturated_fats">Polyunsaturated
+                                    fats</label>
+                                <input class="form-control form-control-sm rounded-5 text-center" type="number"
+                                       name="polyunsaturated_fats" step="0.01" required=""
+                                       id="id_polyunsaturated_fats"
+                                       value="{{ grocery.nutrition_facts_label.polyunsaturated_fats }}">
+                                <div class="ms-3">grams</div>
+                            </div>
+                            <div class="mb-2 d-flex align-items-center">
+                                <label class="form-label mb-0 me-3" for="id_monounsaturated_fats">Monounsaturated
+                                    fats</label>
+                                <input class="form-control form-control-sm rounded-5 text-center" type="number"
+                                       name="monounsaturated_fats" step="0.01" required=""
+                                       id="id_monounsaturated_fats"
+                                       value="{{ grocery.nutrition_facts_label.monounsaturated_fats }}">
+                                <div class="ms-3">grams</div>
+                            </div>
+                            <div class="mb-2 d-flex align-items-center main-label">
+                                <label class="form-label mb-0 me-3"
+                                       for="id_carbohydrates"><strong>Carbohydrates</strong></label>
+                                <input class="form-control form-control-sm rounded-5 text-center" type="number"
+                                       name="carbohydrates"
+                                       step="0.01" required="" id="id_carbohydrates"
+                                       value="{{ grocery.nutrition_facts_label.carbohydrates }}">
+                                <div class="ms-3">grams</div>
+                            </div>
+                            <div class="mb-2 d-flex align-items-center">
+                                <label class="form-label mb-0 me-3" for="id_dietary_fiber">Dietary fiber</label>
+                                <input class="form-control form-control-sm rounded-5 text-center" type="number"
+                                       name="dietary_fiber"
+                                       step="0.01" required="" id="id_dietary_fiber"
+                                       value="{{ grocery.nutrition_facts_label.dietary_fiber }}">
+                                <div class="ms-3">grams</div>
+                            </div>
+                            <div class="mb-2 d-flex align-items-center">
+                                <label class="form-label mb-0 me-3" for="id_sugars">Sugars</label>
+                                <input class="form-control form-control-sm rounded-5 text-center" type="number"
+                                       name="sugars"
+                                       step="0.01" required="" id="id_sugars"
+                                       value="{{ grocery.nutrition_facts_label.sugars }}">
+                                <div class="ms-3">grams</div>
+                            </div>
+                            <div class="mb-2 d-flex align-items-center main-label">
+                                <label class="form-label mb-0 me-3" for="id_proteins"><strong>Proteins</strong></label>
+                                <input class="form-control form-control-sm rounded-5 text-center" type="number"
+                                       name="proteins"
+                                       step="0.01" required="" id="id_proteins"
+                                       value="{{ grocery.nutrition_facts_label.proteins }}">
+                                <div class="ms-3">grams</div>
+                            </div>
+                            <div class="mb-2 d-flex align-items-center">
+                                <label class="form-label mb-0 me-3" for="id_calories"><strong
+                                        style="font-size: 24px;">Calories</strong></label>
+                                <input class="form-control form-control-sm rounded-5 text-center" type="number"
+                                       name="calories"
+                                       step="0.01" required="" id="id_calories"
+                                       value="{{ grocery.nutrition_facts_label.calories }}">
+                                <div class="ms-3" style="font-size: 32px;">kcal</div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3 mb-1">
+                            <button type="submit" class="btn btn-primary text-white rounded-5 w-100" form="add-grocery">
+                                <strong>Submit</strong>
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-end my-3">
+                            <a href="{% url 'groceries:groceries' %}" type="button"
+                               class="btn btn-secondary text-primary rounded-5 w-100">
+                                <strong>Back to Groceries</strong>
+                            </a>
+                        </div>
+                        <div>
+                            <img class="img-fluid"
+                                 src="{% static 'images/young-women-presenting-healthy-foods.jpg' %}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

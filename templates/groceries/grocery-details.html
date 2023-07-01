@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Grocery Details{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-5 bg-info rounded-5 px-5 py-3 d-flex justify-content-center align-items-center">
+                <img src="{{ MEDIA_URL }}{{ grocery.image.url }}" class="img-fluid w-75" alt=""/>
+            </div>
+            <div class="col-7 px-5 py-3 d-flex flex-column justify-content-between">
+                <h1>{{ grocery.name }}</h1>
+                <p style="text-align: justify;">{{ grocery.description }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5 rounded-5 px-5 py-3 nutrition-facts-label text-white"
+                 style="background-color: rgba(83, 124, 229, 255); height: fit-content;">
+                <h3 class="pt-3">Nutrition facts (per 100 grams)</h3>
+                <hr class="border-5 border-white w-100 opacity-100 rounded-5 pb-0"/>
+                <div class="d-flex align-items-center main-label">
+                    <label class="form-label mb-0 me-3" for="id_fats"><strong>Fats:</strong></label>
+                    <div class="ms-1">{{ grocery.nutrition_facts_label.fats }} grams</div>
+                </div>
+                <div class="ms-3">
+                    <div class="d-flex align-items-center">
+                        <label class="form-label mb-0 me-3" for="id_saturated_fats">Saturated fats:</label>
+                        <div class="ms-1">{{ grocery.nutrition_facts_label.saturated_fats }} grams</div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="form- mb-0 me-3" for="id_polyunsaturated_fats">Polyunsaturated fats:</label>
+                        <div class="ms-1">{{ grocery.nutrition_facts_label.polyunsaturated_fats }} grams</div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="form-label mb-0 me-3" for="id_monounsaturated_fats">Monounsaturated
+                            fats:</label>
+                        <div class="ms-1">{{ grocery.nutrition_facts_label.monounsaturated_fats }} grams</div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center main-label">
+                    <label class="form-label mb-0 me-3"
+                           for="id_carbohydrates"><strong>Carbohydrates:</strong></label>
+                    <div class="ms-1">{{ grocery.nutrition_facts_label.carbohydrates }} grams</div>
+                </div>
+                <div class="ms-3">
+                    <div class="d-flex align-items-center">
+                        <label class="form-label mb-0 me-3" for="id_dietary_fiber">Dietary fiber:</label>
+                        <div class="ms-1">{{ grocery.nutrition_facts_label.dietary_fiber }} grams</div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <label class="form-label mb-0 me-3" for="id_sugars">Sugars:</label>
+                        <div class="ms-1">{{ grocery.nutrition_facts_label.sugars }} grams</div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center main-label">
+                    <label class="form-label mb-0 me-3" for="id_proteins"><strong>Proteins:</strong></label>
+                    <div class="ms-1">{{ grocery.nutrition_facts_label.proteins }} grams</div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <label class="form-label mb-0 me-3" for="id_calories"><strong
+                            style="font-size: 24px;">Calories:</strong></label>
+                    <div class="ms-1" style="font-size: 32px;">{{ grocery.nutrition_facts_label.calories }} kcal</div>
+                </div>
+            </div>
+            <div class="col-7 px-5 py-3">
+                <div class="row mb-3">
+                    <div class="col d-flex justify-content-start flex-wrap">
+                        {% for category in grocery.categories.all %}
+                            <div class="bg-success rounded-5 px-5 py-1 mb-3 me-3">
+                                <strong style="color: rgba(83, 124, 229, 255);">{{ category }}</strong>
+                            </div>
+                        {% endfor %}
+                        {% for diet in grocery.diets.all %}
+                            <div class="bg-success rounded-5 px-5 py-1 mb-3 me-3">
+                                <strong style="color: rgba(83, 124, 229, 255);">{{ diet }}</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col d-flex">
+                        <div class="rounded-5 px-5 py-2 w-50 text-center"
+                             style="background-color: rgba(43, 70, 139, 255);">
+                            <strong style="font-size: 28px;" class="text-white">${{ grocery.price }}</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col d-flex justify-content-end">
+                        {% if user.role == 'CONSUMER' %}
+                            <a href="{% url 'groceries:add_to_cart' grocery.id %}"
+                                    class="btn btn-primary text-white rounded-5 px-5 ms-3"
+                                    style="font-style: italic">
+                                Add to Cart
+                            </a>
+                        {% endif %}
+                        {% if user.role == 'SELLER' %}
+                            <a href="{% url 'groceries:edit_grocery' grocery.id %}"
+                               class="btn btn-warning text-white rounded-5 px-5 ms-3"
+                               style="font-style: italic">Edit</a>
+                            <form method="POST" action="{% url 'groceries:delete_grocery' grocery.id %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="btn btn-danger text-white rounded-5 px-5 ms-3"
+                                        style="font-style: italic">Delete
+                                </button>
+                            </form>
+                        {% endif %}
+                        <a href="{% url 'groceries:groceries' %}"
+                           class="btn btn-secondary text-primary rounded-5 px-5 ms-3"
+                           style="font-style: italic">Back to Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
